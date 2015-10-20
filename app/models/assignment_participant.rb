@@ -26,7 +26,7 @@ class AssignmentParticipant < Participant
 
   # Returns the average score of one question from all reviews for this user on this assignment as an floating point number
   # Params: question - The Question object to retrieve the scores from
-  def average_question_score(question)
+                                                                                                                                                                                                                                                                                            def average_question_score(question)
     sum_of_scores = 0
     number_of_scores = 0
 
@@ -65,6 +65,7 @@ class AssignmentParticipant < Participant
     (sum_of_scores / self.response_maps.size).to_i
   end
 
+=begin
   def average_score_per_assignment(assignment_id)
     return 0 if self.response_maps.size == 0
 
@@ -78,6 +79,7 @@ class AssignmentParticipant < Participant
 
     (sum_of_scores / self.response_maps.size).to_i
   end
+=end
 
   def includes?(participant)
     participant == self
@@ -114,11 +116,13 @@ class AssignmentParticipant < Participant
   ##  ReviewResponseMap.where(['reviewee_id = ? && reviewer_id = ? && reviewed_object_id = ?', team_id, reviewer.id, assignment.id]).count > 0
   #end
 
+=begin
   def quiz_taken_by?(contributor, reviewer)
     quiz_id = QuizQuestionnaire.find_by_instructor_id(contributor.id)
     return QuizResponseMap.where(['reviewee_id = ? AND reviewer_id = ? AND reviewed_object_id = ?',
                                   self.id, reviewer.id, quiz_id]).count > 0
   end
+=end
 
   def has_submissions?
     return ((submitted_files.length > 0) or
@@ -126,11 +130,14 @@ class AssignmentParticipant < Participant
             (hyperlinks_array.length > 0))
   end
 
+=begin
   def has_quiz?
     return !QuizQuestionnaire.find_by_instructor_id(self.id).nil?
   end
+=end
 
   # all the participants in this assignment reviewed by this person
+=begin
   def reviewees
     reviewees = []
     rmaps = ResponseMap.all(conditions: ["reviewer_id = #{self.id} && type = 'ReviewResponseMap'"])
@@ -138,6 +145,7 @@ class AssignmentParticipant < Participant
 
     reviewees
   end
+=end
 
   # all the participants in this assignment who have reviewed this person
   def reviewers
@@ -156,6 +164,7 @@ class AssignmentParticipant < Participant
   # Consider a 3 node cycle: A --> B --> C --> A (A reviewed B; B reviewed C and C reviewed A)
   # For the above cycle, the data structure would be: [[A, SCA], [B, SAB], [C, SCB]], where SCA is the score given by C to A.
 
+=begin
   def two_node_cycles
     cycles = []
     self.reviewers.each do |ap|
@@ -167,8 +176,10 @@ class AssignmentParticipant < Participant
     end
     cycles
   end
+=end
 
 
+=begin
   def three_node_cycles
     cycles = []
     self.reviewers.each do |ap1|
@@ -183,7 +194,9 @@ class AssignmentParticipant < Participant
     end
     cycles
   end
+=end
 
+=begin
   def four_node_cycles
     cycles = []
     self.reviewers.each do |ap1|
@@ -201,8 +214,10 @@ class AssignmentParticipant < Participant
     end
     cycles
   end
+=end
 
   # Per cycle
+=begin
   def cycle_similarity_score(cycle)
     similarity_score = 0.0
     count = 0.0
@@ -216,8 +231,10 @@ class AssignmentParticipant < Participant
     similarity_score = similarity_score / count unless count == 0.0
     similarity_score
   end
+=end
 
   # Per cycle
+=begin
   def cycle_deviation_score(cycle)
     deviation_score = 0.0
     count = 0.0
@@ -232,6 +249,7 @@ class AssignmentParticipant < Participant
     deviation_score = deviation_score / count unless count == 0.0
     deviation_score
   end
+=end
 
   def review_score
     review_questionnaire = self.assignment.questionnaires.select {|q| q.type == "ReviewQuestionnaire"}[0]
@@ -348,6 +366,7 @@ class AssignmentParticipant < Participant
     end
   end
 
+=begin
   def compute_quiz_scores(scores)
     total = 0
     if scores[:quiz][:scores][:avg]
@@ -357,6 +376,7 @@ class AssignmentParticipant < Participant
     end
     return total
   end
+=end
   # Appends the hyperlink to a list that is stored in YAML format in the DB
   # @exception  If is hyperlink was already there
   #             If it is an invalid URL
@@ -647,11 +667,13 @@ class AssignmentParticipant < Participant
     end
 
 
+=begin
     def review_response_maps
       participant = Participant.find(id)
       team_id = TeamsUser.team_id(participant.parent_id, participant.user_id)
       ReviewResponseMap.where(reviewee_id: team_id, reviewed_object_id: assignment.id)
     end
+=end
 
     def topic_string
       return "<center>&#8212;</center>" if topic.nil? or topic.topic_name.empty?
