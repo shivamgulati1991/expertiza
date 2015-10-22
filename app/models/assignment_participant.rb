@@ -132,8 +132,7 @@ class AssignmentParticipant < Participant
   end
 
   # Return scores that this participant has been given
-  def scor
-    es(questions)
+  def scores(questions)
     scores = {}
     scores[:participant] = self
 
