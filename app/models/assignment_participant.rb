@@ -136,12 +136,10 @@ class AssignmentParticipant < Participant
     scores = {}
     scores[:participant] = self
 
-    #refactor 1
     assignmentQuestionnaires(questions, scores)
 
     scores[:total_score] = self.assignment.compute_total_score(scores)
 
-    #refactor 2
     mergeScores(scores)
 
     # In the event that this is a microtask, we need to scale the score accordingly and record the total possible points
@@ -169,7 +167,6 @@ class AssignmentParticipant < Participant
     scores[:total_score] = assignment.compute_total_score(scores)
     #scores[:total_score] += compute_quiz_scores(scores)
 
-    #refactor 3
     calculateScores(scores)
   end
 
@@ -332,7 +329,7 @@ class AssignmentParticipant < Participant
   end
 
   def bookmark_reviews
-    BookmarkRatingResponseMap.get_assessments_for(self)
+    BookmarkRatingRe4sponseMap.get_assessments_for(self)
   end
 
   def submitted_files
